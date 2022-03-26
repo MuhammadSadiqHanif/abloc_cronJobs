@@ -1,0 +1,46 @@
+{
+  "name": "crypto-socket",
+  "version": "4.0.0",
+  "description": "Basic cryptocurrency ticker supporting multiple exchanges and currencies with websockets where available.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/redcap3000/crypto-socket"
+  },
+  "keywords": [
+    "crypto",
+    "websocket",
+    "API",
+    "bitcoin",
+    "ethereum",
+    "litecoin",
+    "finance",
+    "ticker"
+  ],
+  "dependencies": {
+    "axios": "^0.21.4",
+    "bcrypt": "^5.0.0",
+    "coingecko-api": "^1.0.10",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.10.13",
+    "node-cron": "^3.0.0",
+    "nodemailer": "^6.4.15",
+    "socket.io": "^4.2.0",
+    "stripe": "^8.184.0",
+    "validator": "^13.7.0",
+    "websocket": "^1.0.34"
+  },
+  "author": "Ronaldo Barbachano",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/redcap3000/crypto-socket/issues"
+  },
+  "homepage": "https://github.com/redcap3000/crypto-socket"
+}
