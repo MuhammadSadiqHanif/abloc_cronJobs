@@ -15,6 +15,7 @@ const {
   UpdateBuyStopLimitStatus,
   UpdateSellStopLimitStatus,
 } = require("./LimitOrdersFunctions");
+const { UpdateFutureTradeStatus } = require("./futureTradingFunctions");
 const defaultCoinsSlugs = [
   "cardano",
   "algorand",
@@ -69,6 +70,7 @@ async function getCoinPrices(io) {
             UpdateBuyStopLimitStatus(obj, data, io);
             UpdateSellStopLimitStatus(obj, data, io);
             UpdatedLimitStatusEqual(obj, data, io);
+            UpdateFutureTradeStatus(obj, data, io);
             return obj;
           }
         });

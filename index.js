@@ -6,6 +6,8 @@ require("./db/models/CoinsHistory");
 require("./db/models/Wallet");
 require("./db/models/Trading");
 require("./db/models/LimitOrder");
+require("./db/models/futureMarketTrading");
+require("./db/models/futureMarketTradingDemo");
 require("./db/mongoose");
 const cron = require("node-cron");
 const express = require("express");

@@ -2,7 +2,8 @@ const Trading = require("../db/models/Trading");
 const Wallet = require("../db/models/Wallet");
 function BuyAndSell(
   data,
-  { fromSymbol, fromAmount, toSymbol, toAmount, requestType }
+  { fromSymbol, fromAmount, toSymbol, toAmount, requestType },
+  futureTrading
 ) {
   let totalWallet = data?.totalWallet;
 
@@ -30,7 +31,9 @@ function BuyAndSell(
         currency: toSymbol,
         created: new Date().getTime(),
         transactionType: "buy",
-        description: `Buy ${toSymbol} from ${fromSymbol} on spot Trading `,
+        description: futureTrading
+          ? `Buy ${toSymbol} from ${fromSymbol} on future Trading `
+          : `Buy ${toSymbol} from ${fromSymbol} on spot Trading `,
       });
     } else {
       data.transaction = [
@@ -39,7 +42,9 @@ function BuyAndSell(
           currency: toSymbol,
           created: new Date().getTime(),
           transactionType: "buy",
-          description: `Buy ${toSymbol} from ${fromSymbol} on spot Trading `,
+          description: futureTrading
+            ? `Buy ${toSymbol} from ${fromSymbol} on future Trading `
+            : `Buy ${toSymbol} from ${fromSymbol} on spot Trading `,
         },
       ];
     }
@@ -68,7 +73,9 @@ function BuyAndSell(
         currency: fromSymbol,
         created: new Date().getTime(),
         transactionType: "sell",
-        description: `Sell ${fromSymbol} on spot Trading `,
+        description: futureTrading
+          ? `Sell ${fromSymbol} on future Trading `
+          : `Sell ${fromSymbol} on spot Trading `,
       });
     } else {
       data.transaction = [
@@ -77,7 +84,9 @@ function BuyAndSell(
           currency: fromSymbol,
           created: new Date().getTime(),
           transactionType: "sell",
-          description: `Sell ${fromSymbol} on spot Trading `,
+          description: futureTrading
+            ? `Sell ${fromSymbol} on future Trading `
+            : `Sell ${fromSymbol} on spot Trading `,
         },
       ];
     }
