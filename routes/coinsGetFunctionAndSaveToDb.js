@@ -55,7 +55,7 @@ async function getCoinPrices(io) {
     LatestMarket.find({}, async (err, docs) => {
       if (!err) {
         let coinsMap = await docs.map((obj) => {
-          if (data[obj.slug]) {
+          // if (data[obj.slug]) {
             let updatedOBJ = {
               ...obj._doc,
               previous_marketData: {
@@ -75,7 +75,7 @@ async function getCoinPrices(io) {
             UpdatedLimitStatusEqual(obj, data, io);
             UpdateFutureTradeStatus(obj, data, io);
             return obj;
-          }
+          // }
         });
         Promise.all(coinsMap)
           .then(async (result) => {

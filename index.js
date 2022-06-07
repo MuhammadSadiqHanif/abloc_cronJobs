@@ -14,6 +14,11 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 var { Server } = require("socket.io");
+const { BinanceClient } = require("ccxws");
+const binance = new BinanceClient();
+
+// market could be from CCXT or genearted by the user
+
 const {
   getAllCoinsInfo,
   GetAllCoinsHistory,
@@ -41,6 +46,30 @@ const onConnection = (socket) => {
   // GetLiveMarketStreamCoins(io, socket);
 
   // this is a CoinGecko-api We will call this api for get all coins updated prices  in every 5 seconds
+
+  
+  // const market = {
+  //   id: "BTCUSDT", // remote_id used by the exchange
+  //   base: "BTC", // standardized base symbol for Bitcoin
+  //   quote: "USDT", // standardized quote symbol for Tether
+  // };
+
+  // // handle trade events
+  // binance.on("trade", (trade) => console.log(trade));
+  
+  // binance.on("Ticker", (Ticker) => console.log(Ticker));
+
+  // // handle level2 orderbook snapshots
+  // binance.on("l2snapshot", (snapshot) => console.log(snapshot));
+
+  // // subscribe to trades
+  // binance.subscribeTrades(market);
+
+  // binance.subscribeTicker(market)
+
+  // // subscribe to level2 orderbook snapshots
+  // binance.subscribeLevel2Snapshots(market);
+
   getCoinPrices(io);
   // here is basic cron job
   let task = cron.schedule(
