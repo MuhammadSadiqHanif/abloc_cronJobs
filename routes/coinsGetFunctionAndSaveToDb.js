@@ -56,25 +56,29 @@ async function getCoinPrices(io) {
       if (!err) {
         let coinsMap = await docs.map((obj) => {
           // if (data[obj.slug]) {
-            let updatedOBJ = {
-              ...obj._doc,
-              previous_marketData: {
-                ...obj._doc.market_data,
-              },
-              market_data: {
-                ...obj._doc.market_data,
-                price_usd: data[obj.slug].usd,
-              },
-            };
-            arr.push(updatedOBJ);
-            // socket.on('chat', (msg) => {
-            // UpdateBuyLimitStatus(obj, data,io);
-            // UpdateSellLimitStatus(obj, data,io);
-            UpdateBuyStopLimitStatus(obj, data, io);
-            UpdateSellStopLimitStatus(obj, data, io);
-            UpdatedLimitStatusEqual(obj, data, io);
-            UpdateFutureTradeStatus(obj, data, io);
-            return obj;
+          let updatedOBJ = {
+            ...obj._doc,
+            previous_marketData: {
+              ...obj._doc.market_data,
+            },
+            market_data: data[obj.slug]
+              ? {
+                  ...obj._doc.market_data,
+                  price_usd: data[obj.slug].usd,
+                }
+              : {
+                  ...obj._doc.market_data,
+                },
+          };
+          arr.push(updatedOBJ);
+          // socket.on('chat', (msg) => {
+          // UpdateBuyLimitStatus(obj, data,io);
+          // UpdateSellLimitStatus(obj, data,io);
+          UpdateBuyStopLimitStatus(obj, data, io);
+          UpdateSellStopLimitStatus(obj, data, io);
+          UpdatedLimitStatusEqual(obj, data, io);
+          UpdateFutureTradeStatus(obj, data, io);
+          return obj;
           // }
         });
         Promise.all(coinsMap)
