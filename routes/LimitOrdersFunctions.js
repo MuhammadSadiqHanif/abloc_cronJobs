@@ -14,22 +14,24 @@ const UpdateBuyLimitStatus = (obj, data, io) => {
     },
     // { limitAmount: "40000", purchaseSymbol: "BTC" },
     async (err, orders) => {
-      await orders.map((obj) => {
-        LimitOrder.findOneAndUpdate(
-          { userId: obj.userId, _id: obj._id, status: "pending" },
-          { $set: { status: "success" } },
-          async (err, docs) => {
-            //console.log("hello run");
-            TradingRequestFunction(obj._doc, io)
-              .then((res) => {
-                //console.log(res, "save");
-              })
-              .catch((err) => {
-                //console.log(err, "error");
-              });
-          }
-        );
-      });
+      if (orders && orders.length) {
+        await orders.map((obj) => {
+          LimitOrder.findOneAndUpdate(
+            { userId: obj.userId, _id: obj._id, status: "pending" },
+            { $set: { status: "success" } },
+            async (err, docs) => {
+              //console.log("hello run");
+              TradingRequestFunction(obj._doc, io)
+                .then((res) => {
+                  //console.log(res, "save");
+                })
+                .catch((err) => {
+                  //console.log(err, "error");
+                });
+            }
+          );
+        });
+      }
     }
   );
 };
@@ -46,22 +48,24 @@ const UpdateSellLimitStatus = (obj, data, io) => {
     },
     // { limitAmount: "40000", purchaseSymbol: "BTC" },
     async (err, orders) => {
-      await orders.map((obj) => {
-        LimitOrder.findOneAndUpdate(
-          { userId: obj.userId, _id: obj._id, status: "pending" },
-          { $set: { status: "success" } },
-          async (err, docs) => {
-            //console.log("hello run");
-            TradingRequestFunction(obj._doc, io)
-              .then((res) => {
-                //console.log(res, "save");
-              })
-              .catch((err) => {
-                //console.log(err, "error");
-              });
-          }
-        );
-      });
+      if (orders && orders.length) {
+        await orders.map((obj) => {
+          LimitOrder.findOneAndUpdate(
+            { userId: obj.userId, _id: obj._id, status: "pending" },
+            { $set: { status: "success" } },
+            async (err, docs) => {
+              //console.log("hello run");
+              TradingRequestFunction(obj._doc, io)
+                .then((res) => {
+                  //console.log(res, "save");
+                })
+                .catch((err) => {
+                  //console.log(err, "error");
+                });
+            }
+          );
+        });
+      }
     }
   );
 };
@@ -76,22 +80,24 @@ const UpdatedLimitStatusEqual = (obj, data, io) => {
     },
     // { limitAmount: "40000", purchaseSymbol: "BTC" },
     async (err, orders) => {
-      await orders.map((obj) => {
-        LimitOrder.findOneAndUpdate(
-          { userId: obj.userId, _id: obj._id, status: "pending" },
-          { $set: { status: "success" } },
-          async (err, docs) => {
-            //console.log("hello run");
-            TradingRequestFunction(obj._doc, io)
-              .then((res) => {
-                //console.log(res, "save");
-              })
-              .catch((err) => {
-                //console.log(err, "error");
-              });
-          }
-        );
-      });
+      if (orders && orders.length) {
+        await orders.map((obj) => {
+          LimitOrder.findOneAndUpdate(
+            { userId: obj.userId, _id: obj._id, status: "pending" },
+            { $set: { status: "success" } },
+            async (err, docs) => {
+              //console.log("hello run");
+              TradingRequestFunction(obj._doc, io)
+                .then((res) => {
+                  //console.log(res, "save");
+                })
+                .catch((err) => {
+                  //console.log(err, "error");
+                });
+            }
+          );
+        });
+      }
     }
   );
 };
@@ -108,22 +114,24 @@ const UpdateBuyStopLimitStatus = (obj, data, io) => {
     },
     // { limitAmount: "40000", purchaseSymbol: "BTC" },
     async (err, orders) => {
-      await orders.map((obj) => {
-        LimitOrder.findOneAndUpdate(
-          { userId: obj.userId, _id: obj._id, status: "pending" },
-          { $set: { status: "success" } },
-          async (err, docs) => {
-            //console.log("hello run");
-            TradingRequestFunction(obj._doc, io)
-              .then((res) => {
-                //console.log(res, "save");
-              })
-              .catch((err) => {
-                //console.log(err, "error");
-              });
-          }
-        );
-      });
+      if (orders && orders.length) {
+        await orders.map((obj) => {
+          LimitOrder.findOneAndUpdate(
+            { userId: obj.userId, _id: obj._id, status: "pending" },
+            { $set: { status: "success" } },
+            async (err, docs) => {
+              //console.log("hello run");
+              TradingRequestFunction(obj._doc, io)
+                .then((res) => {
+                  //console.log(res, "save");
+                })
+                .catch((err) => {
+                  //console.log(err, "error");
+                });
+            }
+          );
+        });
+      }
     }
   );
 };
@@ -140,22 +148,24 @@ const UpdateSellStopLimitStatus = (obj, data, io) => {
     },
     // { limitAmount: "40000", purchaseSymbol: "BTC" },
     async (err, orders) => {
-      await orders.map((obj) => {
-        LimitOrder.findOneAndUpdate(
-          { userId: obj.userId, _id: obj._id, status: "pending" },
-          { $set: { status: "success" } },
-          async (err, docs) => {
-            //console.log("hello run");
-            TradingRequestFunction(obj._doc, io)
-              .then((res) => {
-                //console.log(res, "save");
-              })
-              .catch((err) => {
-                //console.log(err, "error");
-              });
-          }
-        );
-      });
+      if (orders && orders.length) {
+        await orders.map((obj) => {
+          LimitOrder.findOneAndUpdate(
+            { userId: obj.userId, _id: obj._id, status: "pending" },
+            { $set: { status: "success" } },
+            async (err, docs) => {
+              //console.log("hello run");
+              TradingRequestFunction(obj._doc, io)
+                .then((res) => {
+                  //console.log(res, "save");
+                })
+                .catch((err) => {
+                  //console.log(err, "error");
+                });
+            }
+          );
+        });
+      }
     }
   );
 };

@@ -7,7 +7,7 @@ const { BuyAndSell } = require("./tradingFunctions");
 
 const UpdateFutureTradeStatus = (obj, data, io) => {
   try {
-    console.log(obj.symbol, data[obj.slug].usd, "new update");
+    // console.log(obj.symbol, data[obj.slug].usd, "new update");
     FutureMarketTrading.find(
       {
         currentMarketPrice: data[obj.slug].usd,

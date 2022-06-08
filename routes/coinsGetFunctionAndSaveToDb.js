@@ -43,7 +43,7 @@ const defaultCoinsSlugs = [
 ];
 async function getCoinPrices(io) {
   try {
-    console.log("get coin prices cron job working.......");
+    // console.log("get coin prices cron job working.......");
     const CoinGeckoClient = new CoinGecko();
     let data2 = await CoinGeckoClient.simple.price({
       ids: defaultCoinsSlugs,
@@ -58,6 +58,9 @@ async function getCoinPrices(io) {
           if (data[obj.slug]) {
             let updatedOBJ = {
               ...obj._doc,
+              previous_marketData: {
+                ...obj._doc.market_data,
+              },
               market_data: {
                 ...obj._doc.market_data,
                 price_usd: data[obj.slug].usd,
@@ -113,7 +116,7 @@ async function getCoinPrices(io) {
 }
 function getAllCoinsInfo() {
   try {
-    console.log("Get All Coins Info");
+    // console.log("Get All Coins Info");
     let slugs =
       "BTC,ETH,USDT,USDC,ADA,DOGE,DOT,BCH,UNI,LTC,VET,XRM,ALGO,SHIB,ICP,MATIC,SUSHI,NEAR,XLM,SOL,MKR,XRP,LINK";
     axios({

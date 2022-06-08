@@ -43,11 +43,20 @@ const onConnection = (socket) => {
   // this is a CoinGecko-api We will call this api for get all coins updated prices  in every 5 seconds
   getCoinPrices(io);
   // here is basic cron job
-  cron.schedule("* * * * *", function () {
-    // Get all over history and info of 20 coins
-    getAllCoinsInfo();
-    GetAllCoinsHistory();
-  });
+  let task = cron.schedule(
+    "0 0 0 * * *",
+    function () {
+      // Get all over history and info of 20 coins
+      console.log("coins cron job working");
+      getAllCoinsInfo();
+      GetAllCoinsHistory();
+    },
+    {
+      scheduled: true,
+      timezone: "Asia/Karachi",
+    }
+  );
+  task.start();
   // if we change the database when we will call this function because this get all 20 coins data
   // GetLiveMarketCoins()
 };
