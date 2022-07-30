@@ -70,8 +70,6 @@ const onConnection = (socket) => {
   // // subscribe to level2 orderbook snapshots
   // binance.subscribeLevel2Snapshots(market);
 
-  getCoinPrices(io);
-  // here is basic cron job
   let task = cron.schedule(
     "0 0 0 * * *",
     function () {
@@ -85,6 +83,8 @@ const onConnection = (socket) => {
       timezone: "Asia/Karachi",
     }
   );
+  getCoinPrices(io);
+  // here is basic cron job
   task.start();
   // if we change the database when we will call this function because this get all 20 coins data
   // GetLiveMarketCoins()
