@@ -26,7 +26,7 @@ async function SetCoinPrices(latestMarketObject, coingeckcoObject, io) {
                 ? {
                     ...latestMarketObject.market_data,
                     price_usd: Number(coingeckcoObject[latestMarketObject.slug].usd),
-                    percent_change_usd_last_24_hours: Number(coingeckcoObject[latestMarketObject.slug].volume),
+                    // percent_change_usd_last_24_hours: Number(coingeckcoObject[latestMarketObject.slug].volume),
                 }
                 : {
                     ...latestMarketObject.market_data,
