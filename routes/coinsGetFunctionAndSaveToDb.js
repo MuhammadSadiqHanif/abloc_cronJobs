@@ -50,7 +50,7 @@ async function getCoinPrices(io) {
       vs_currencies: ["eur", "usd"],
     });
     let data = data2.data;
-    // //console.log(data);
+    console.log(data);
     let arr = [];
     LatestMarket.find({}, async (err, docs) => {
       if (!err) {
@@ -62,12 +62,12 @@ async function getCoinPrices(io) {
             },
             market_data: data[obj.slug]
               ? {
-                ...obj._doc.market_data,
-                price_usd: data[obj.slug].usd,
-              }
+                  ...obj._doc.market_data,
+                  price_usd: data[obj.slug].usd,
+                }
               : {
-                ...obj._doc.market_data,
-              },
+                  ...obj._doc.market_data,
+                },
           };
           arr.push(updatedOBJ);
           // socket.on('chat', (msg) => {
@@ -364,7 +364,7 @@ async function GetAllCoinsHistory() {
           let arr = [{ str }];
           await CoinsHistory.bulkWrite(
             arr.map((data3) => {
-              console.log({ symbol: val[0]?.symbol, quotes: data2.data, });
+              console.log(val, data2);
               return {
                 updateOne: {
                   filter: { symbol: val[0]?.symbol },

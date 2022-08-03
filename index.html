@@ -72,8 +72,8 @@
 
       var form = document.getElementById("form");
       var input = document.getElementById("input");
-      socket.on("Live_Update", () => {
-        console.log("updateee");
+      socket.on("Live_Update", (msg) => {
+        console.log("updateee",msg);
       });
       form.addEventListener("submit", function (e) {
         e.preventDefault();
