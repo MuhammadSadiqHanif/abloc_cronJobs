@@ -73,7 +73,6 @@ const onConnection = (socket) => {
 
   // getCoinPrices(io);
   console.log("dsakjdklsj")
-  setHistoryOfCoins()
   binanaceSocket(io)
   // 
   
@@ -84,6 +83,7 @@ const onConnection = (socket) => {
       // Get all over history and info of 20 coins
       console.log("coins cron job working");
       getAllCoinsInfo();
+      setHistoryOfCoins()
       // GetAllCoinsHistory();
     },
     {
