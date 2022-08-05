@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
-const LimitOrder = mongoose.model("LimitOrder");
-const { TradingRequestFunction } = require("./tradingFunctions");
+const LimitOrder = mongoose.model("PaperTradingLimitOrder");
+const { TradingRequestFunction } = require("./demotradingFunctions");
 
 // When Market Value Goes leasser Then Limit Amount
-const UpdateBuyLimitStatus = (obj, data, io) => {
+const UpdateBuyLimitStatus2 = (obj, data, io) => {
   LimitOrder.find(
     {
       limitAmount: { $lt: data[obj.slug].usd },
@@ -41,7 +41,7 @@ const UpdateBuyLimitStatus = (obj, data, io) => {
 };
 
 // When Market Value Goes Greater Then Limit Amount
-const UpdateSellLimitStatus = (obj, data, io) => {
+const UpdateSellLimitStatus2 = (obj, data, io) => {
   LimitOrder.find(
     {
       limitAmount: { $gte: data[obj.slug].usd },
@@ -79,7 +79,7 @@ const UpdateSellLimitStatus = (obj, data, io) => {
 };
 
 // When Market Value Equal FOr Limit Amount
-const UpdatedLimitStatusEqual = (obj, data, io) => {
+const UpdatedLimitStatusEqual2 = (obj, data, io) => {
   LimitOrder.find(
     {
       limitAmount: data[obj.slug].usd,
@@ -111,7 +111,7 @@ const UpdatedLimitStatusEqual = (obj, data, io) => {
 };
 
 // When Market Value Goes leasser Then Stop Amount
-const UpdateBuyStopLimitStatus = (obj, data, io) => {
+const UpdateBuyStopLimitStatus2 = (obj, data, io) => {
   LimitOrder.find(
     {
       StopLimitAmount: { $lt: data[obj.slug].usd },
@@ -149,7 +149,7 @@ const UpdateBuyStopLimitStatus = (obj, data, io) => {
 };
 
 // When Market Value Goes Greater Then Stop Amount
-const UpdateSellStopLimitStatus = (obj, data, io) => {
+const UpdateSellStopLimitStatus2 = (obj, data, io) => {
   LimitOrder.find(
     {
       StopLimitAmount: { $gte: data[obj.slug].usd },
@@ -186,9 +186,9 @@ const UpdateSellStopLimitStatus = (obj, data, io) => {
   );
 };
 module.exports = {
-  UpdateBuyLimitStatus,
-  UpdateSellLimitStatus,
-  UpdatedLimitStatusEqual,
-  UpdateBuyStopLimitStatus,
-  UpdateSellStopLimitStatus,
+  UpdateBuyLimitStatus2,
+  UpdateSellLimitStatus2,
+  UpdatedLimitStatusEqual2,
+  UpdateBuyStopLimitStatus2,
+  UpdateSellStopLimitStatus2,
 };

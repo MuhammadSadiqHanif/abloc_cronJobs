@@ -5,6 +5,17 @@ const mongoose = require("mongoose");
 const Binance = require("node-binance-api");
 const CoinsHistory = require("../db/models/CoinsHistory");
 const CoinsMetaData = require("../db/models/CoinsMetaData");
+const { UpdateFutureTradeStatus } = require("./futureTradingFunctions");
+const {
+    UpdateBuyStopLimitStatus,
+    UpdateSellStopLimitStatus,
+    UpdatedLimitStatusEqual,
+} = require("./LimitOrdersFunctions");
+const {
+    UpdateBuyStopLimitStatus2,
+    UpdateSellStopLimitStatus2,
+    UpdatedLimitStatusEqual2,
+} = require("./paperLimitOrdersFunctions");
 const LatestMarket = mongoose.model("LatestMarket");
 
 const client = new Spot("", "", {
@@ -33,6 +44,17 @@ async function SetCoinPrices(latestMarketObject, coingeckcoObject, io) {
                 },
         };
         io.emit("Live_Update", updatedOBJ);
+        setTimeout(() => {
+            if (coingeckcoObject[latestMarketObject.slug]) {
+                UpdateFutureTradeStatus(updatedOBJ, coingeckcoObject, io);
+                UpdateBuyStopLimitStatus(updatedOBJ, coingeckcoObject, io);
+                UpdateSellStopLimitStatus(updatedOBJ, coingeckcoObject, io);
+                UpdatedLimitStatusEqual(updatedOBJ, coingeckcoObject, io);
+                UpdateBuyStopLimitStatus2(updatedOBJ, coingeckcoObject, io);
+                UpdateSellStopLimitStatus2(updatedOBJ, coingeckcoObject, io);
+                UpdatedLimitStatusEqual2(updatedOBJ, coingeckcoObject, io);
+            }
+        }, 2000);
     } catch (newerr) {
         console.log(newerr, "error catch");
         console.log("restart cron job");
@@ -88,7 +110,7 @@ async function binanaceSocket(io) {
                 q: quoteVolume,
                 V: buyVolume,
                 Q: quoteBuyVolume,
-                t: timestamp
+                t: timestamp,
             } = ticks;
             io.emit("Chart_Update", {
                 symbol: symbol.replace("USDT", ""),
@@ -109,7 +131,6 @@ async function binanaceSocket(io) {
                         docs.map((val, i) => {
                             let coingeckcoObject = {
                                 [val._doc.slug]: { usd: close, volume },
-
                             };
                             // console.log(val._doc.slug)
                             SetCoinPrices(val._doc, coingeckcoObject, io);
@@ -149,47 +170,53 @@ const setHistoryOfCoins = () => {
         "LINKUSDT",
     ];
     socketSlugs.forEach((str) => {
-        binance.candlesticks(str, "1d", async (error, ticks, symbol) => {
-            let last_tick = ticks[ticks.length - 1];
-            if (last_tick) {
-                // console.log(ticks)
-                // let [time, open, high, low, close, volume, closeTime, assetVolume, trades, buyBaseVolume, buyAssetVolume, ignored] = last_tick;
-                // console.info(symbol.replace("USDT", "") + " last close: " + close + " time stamp " + time);
-                let val = await CoinsMetaData.find({ symbol: symbol.replace("USDT", "") });
+        binance.candlesticks(
+            str,
+            "1d",
+            async (error, ticks, symbol) => {
+                let last_tick = ticks[ticks.length - 1];
+                if (last_tick) {
+                    // console.log(ticks)
+                    // let [time, open, high, low, close, volume, closeTime, assetVolume, trades, buyBaseVolume, buyAssetVolume, ignored] = last_tick;
+                    // console.info(symbol.replace("USDT", "") + " last close: " + close + " time stamp " + time);
+                    let val = await CoinsMetaData.find({
+                        symbol: symbol.replace("USDT", ""),
+                    });
 
-                await CoinsHistory.bulkWrite(
-                    [0].map((data3) => {
-                        return {
-                            updateOne: {
-                                filter: { symbol: val[0]?.symbol },
-                                update: {
-                                    $set: {
-                                        id: val[0]?.id,
-                                        name: val[0]?.name,
-                                        symbol: val[0]?.symbol,
-                                        column: [
-                                            "timestamp",
-                                            "open",
-                                            "high",
-                                            "low",
-                                            "close",
-                                            "volume",
-                                        ],
-                                        quotes: ticks,
+                    await CoinsHistory.bulkWrite(
+                        [0].map((data3) => {
+                            return {
+                                updateOne: {
+                                    filter: { symbol: val[0]?.symbol },
+                                    update: {
+                                        $set: {
+                                            id: val[0]?.id,
+                                            name: val[0]?.name,
+                                            symbol: val[0]?.symbol,
+                                            column: [
+                                                "timestamp",
+                                                "open",
+                                                "high",
+                                                "low",
+                                                "close",
+                                                "volume",
+                                            ],
+                                            quotes: ticks,
+                                        },
+                                        // $push: {  },
                                     },
-                                    // $push: {  },
+                                    upsert: true,
                                 },
-                                upsert: true,
-                            },
-                        };
-                    })
-                );
-            }
-        }, { limit: 15000, endTime: new Date().getTime() });
-    })
-}
+                            };
+                        })
+                    );
+                }
+            },
+            { limit: 15000, endTime: new Date().getTime() }
+        );
+    });
+};
 module.exports = {
     binanaceSocket,
-    setHistoryOfCoins
+    setHistoryOfCoins,
 };
-

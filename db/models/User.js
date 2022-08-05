@@ -19,6 +19,16 @@ const userShema = new mongoose.Schema(
       trim: true,
       lowercase: true,
     },
+    emailVerified: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    phoneNumberVerified: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
     email: {
       type: String,
       unique: true,
@@ -43,6 +53,10 @@ const userShema = new mongoose.Schema(
         }
       },
     },
+    stripeCustomerId: {
+      type: String,
+      required: true,
+    },
     resetToken: {
       type: String,
       required: false,
@@ -59,35 +73,69 @@ const userShema = new mongoose.Schema(
         },
       },
     ],
+    active: {
+      type: Boolean,
+      default: false,
+    },
+    deactivate: {
+      type: Boolean,
+      default: false,
+    },
+    otp: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    tardingPassword: {
+      type: String,
+      required: false,
+      default: "$2b$10$Cm1xALIYvKEm4J6MXo8/a.euhEF5EH7eP7KRqJq4Zpirri4q/VORu",
+    },
   },
   { timeStamps: true }
 );
 
 userShema.pre("save", function (next) {
   const user = this;
-  if (!user.isModified(PASSWORD)) {
-    return next();
-  }
-  bcrypt.genSalt(10, (err, salt) => {
-    if (err) {
-      return next(err);
-    }
-    bcrypt.hash(user.password, salt, (err, hash) => {
+  console.log("dsald;asl;");
+
+  if (user.isModified("tardingPassword")) {
+    bcrypt.genSalt(10, (err, salt) => {
       if (err) {
         return next(err);
       }
-      user.password = hash;
-      next();
+      bcrypt.hash(user.tardingPassword, salt, (err2, hash2) => {
+        console.log(err2, hash2);
+        if (err2) {
+          return next(err2);
+        }
+        user.tardingPassword = hash2;
+        return next();
+      });
     });
-  });
+  } else if (!user.isModified(PASSWORD)) {
+    return next();
+  } else {
+    bcrypt.genSalt(10, (err, salt) => {
+      if (err) {
+        return next(err);
+      }
+      bcrypt.hash(user.password, salt, (err, hash) => {
+        if (err) {
+          return next(err);
+        }
+        user.password = hash;
+        next();
+      });
+    });
+  }
 });
 
 userShema.methods.generateAuthToken = async function () {
   const user = this;
-  const token = jwt.sign(
-    { _id: user._id },
-    "J7YfycQBB0IiwQfwN4-GpkJSve91UaCVY8VY_UYAj3Hp5qbgaKxLTfTLxYDLai8L"
-  );
+  const token = jwt.sign({ _id: user._id }, process.env.JWT_USER_TOKEN_SECRET, {
+    expiresIn: "3d",
+  });
   user.tokens = user.tokens.concat({ token });
   await user.save();
   return token;
@@ -104,6 +152,7 @@ userShema.methods.comparePassword = function (givenPass) {
   const user = this;
   return new Promise((resolve, reject) => {
     bcrypt.compare(givenPass, user.password, (err, isMatch) => {
+      console.log(isMatch, err);
       if (err) {
         reject(err);
       }
@@ -112,6 +161,28 @@ userShema.methods.comparePassword = function (givenPass) {
       }
       resolve(true);
     });
+  });
+};
+userShema.methods.compareTradingPassword = function (givenPass) {
+  const user = this;
+  return new Promise((resolve, reject) => {
+    if (user.tardingPassword) {
+      console.log(user.tardingPassword,"dlkdjskljdklsa")
+      bcrypt.compare(givenPass, user.tardingPassword, (err, isMatch) => {
+        console.log(isMatch, err);
+        if (err) {
+          reject(err);
+        }
+        if (!isMatch) {
+          reject(false);
+        }
+        resolve(true);
+      });
+    } else if (givenPass === "1122") {
+      resolve(true);
+    } else {
+      reject(false);
+    }
   });
 };
 userShema.methods.generateResetToken = async function () {
@@ -123,6 +194,15 @@ userShema.methods.generateResetToken = async function () {
   } catch (e) {
     //console.log(e.message);
   }
+};
+userShema.methods.generateVerificationToken = function () {
+  const user = this;
+  const verificationToken = jwt.sign(
+    { ID: user._id },
+    process.env.JWT_USER_TOKEN_SECRET,
+    { expiresIn: "7d" }
+  );
+  return verificationToken;
 };
 
 mongoose.model("User", userShema);
