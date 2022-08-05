@@ -111,7 +111,7 @@ async function binanaceSocket(io) {
                                 [val._doc.slug]: { usd: close, volume },
 
                             };
-                            console.log(val._doc.slug)
+                            // console.log(val._doc.slug)
                             SetCoinPrices(val._doc, coingeckcoObject, io);
                         });
                     }
@@ -152,7 +152,7 @@ const setHistoryOfCoins = () => {
         binance.candlesticks(str, "1d", async (error, ticks, symbol) => {
             let last_tick = ticks[ticks.length - 1];
             if (last_tick) {
-                console.log(ticks)
+                // console.log(ticks)
                 // let [time, open, high, low, close, volume, closeTime, assetVolume, trades, buyBaseVolume, buyAssetVolume, ignored] = last_tick;
                 // console.info(symbol.replace("USDT", "") + " last close: " + close + " time stamp " + time);
                 let val = await CoinsMetaData.find({ symbol: symbol.replace("USDT", "") });
