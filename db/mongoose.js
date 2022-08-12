@@ -6,8 +6,8 @@ const URI = `mongodb+srv://fardeem:fardeen11@mydb.vsjit.mongodb.net/myFirstDatab
 
 mongoose.connect(URI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
+  // useCreateIndex: true,
+  useUnifiedTopology: true
 });
 mongoose.connection.on("connected", () => {
   console.log("Connected to MongoDb");

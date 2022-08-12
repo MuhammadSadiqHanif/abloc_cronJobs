@@ -97,47 +97,52 @@ async function binanaceSocket(io) {
         ];
 
         binance.websockets.candlesticks(socketSlugs, "1d", async (candlesticks) => {
-            let { e: eventType, E: eventTime, s: symbol, k: ticks } = candlesticks;
-            let {
-                o: open,
-                h: high,
-                l: low,
-                c: close,
-                v: volume,
-                n: trades,
-                i: interval,
-                x: isFinal,
-                q: quoteVolume,
-                V: buyVolume,
-                Q: quoteBuyVolume,
-                t: timestamp,
-            } = ticks;
-            io.emit("Chart_Update", {
-                symbol: symbol.replace("USDT", ""),
-                data: {
-                    timestamp,
-                    open,
-                    high,
-                    low,
-                    close,
-                    volume,
-                },
-            });
+            try {
 
-            await LatestMarket.find(
-                { symbol: symbol.replace("USDT", "") },
-                async (err, docs) => {
-                    if (!err) {
-                        docs.map((val, i) => {
-                            let coingeckcoObject = {
-                                [val._doc.slug]: { usd: close, volume },
-                            };
-                            // console.log(val._doc.slug)
-                            SetCoinPrices(val._doc, coingeckcoObject, io);
-                        });
+                let { e: eventType, E: eventTime, s: symbol, k: ticks } = candlesticks;
+                let {
+                    o: open,
+                    h: high,
+                    l: low,
+                    c: close,
+                    v: volume,
+                    n: trades,
+                    i: interval,
+                    x: isFinal,
+                    q: quoteVolume,
+                    V: buyVolume,
+                    Q: quoteBuyVolume,
+                    t: timestamp,
+                } = ticks;
+                io.emit("Chart_Update", {
+                    symbol: symbol.replace("USDT", ""),
+                    data: {
+                        timestamp,
+                        open,
+                        high,
+                        low,
+                        close,
+                        volume,
+                    },
+                });
+
+                await LatestMarket.find(
+                    { symbol: symbol.replace("USDT", "") },
+                    (err, docs) => {
+                        if (!err) {
+                            docs.map((val, i) => {
+                                let coingeckcoObject = {
+                                    [val._doc.slug]: { usd: close, volume },
+                                };
+                                // console.log(val._doc.slug)
+                                SetCoinPrices(val._doc, coingeckcoObject, io);
+                            });
+                        }
                     }
-                }
-            );
+                );
+            } catch (error) {
+                console.log(error);
+            }
         });
     } catch (error) {
         console.log(error);
