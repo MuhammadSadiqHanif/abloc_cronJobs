@@ -20,7 +20,7 @@ const UpdateFutureTradeStatus = (obj, data, io) => {
       },
       async (err, orders) => {
         if (err) return;
-        console.log(obj.symbol, data[obj.slug].usd, "new update");
+        // console.log(obj.symbol, data[obj.slug].usd, "new update");
         await orders.map((obj2) => {
           FutureMarketTrading.findOneAndUpdate(
             { userId: obj2.userId, _id: obj2._id, positionStatus: "open" },
@@ -52,7 +52,7 @@ const UpdateFutureTradeStatus = (obj, data, io) => {
             { $set: { positionStatus: "close" } },
             { useFindAndModify: false },
             async (err, docs) => {
-              console.log(obj.symbol, data[obj.slug].usd, "new update")
+              // console.log(obj.symbol, data[obj.slug].usd, "new update")
               if (err) return;
               demoFutureTradingRequestFunction(obj2._doc, io)
                 .then((res) => { })

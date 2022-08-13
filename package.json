@@ -35,7 +35,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.5.2",
+    "mongoose": "^5.13.8",
     "node-binance-api": "^0.13.1",
     "node-cron": "^3.0.0",
     "nodemailer": "^6.4.15",
