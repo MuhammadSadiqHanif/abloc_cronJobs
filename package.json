@@ -4,8 +4,8 @@
   "description": "Basic cryptocurrency ticker supporting multiple exchanges and currencies with websockets where available.",
   "main": "index.js",
   "scripts": {
-    "start2": "npm run server",
-    "start": "pm2-runtime start ecosystem.config.js",
+    "start2": "pm2-runtime start ecosystem.config.js",
+    "start": "npm run server",
     "server": "node index.js -w",
     "server2": "nodemon index.js -w",
     "test": "echo \"Error: no test specified\" && exit 1"
